@@ -8,6 +8,8 @@ const $btnSlideToggle = $('#btn_slideToggle');
 const $box = $('#box');
 const $btnAnimateBig = $('#btn_animate_big');
 const $btnAnimateSmall = $('#btn_animate_small');
+const $btnRed = $('#btn_red');
+const $btnBlue = $('#btn_blue');
 
 $btnFadeTo.on('click', () => {
     $firstP.fadeTo('slow', 0.5)
@@ -46,16 +48,51 @@ $btnAnimateSmall.on('click', () => {
     })
 });
 
+$btnRed.on('click', () => {
+    $box.removeClass('blue');
+    $box.addClass('red');
+});
+$btnBlue.on('click', () => {
+    $box.removeClass('red');
+    $box.addClass('blue');
+});
 
+// input, form - events and methods
+$('input').focus(function () {
+    $(this).css('background', 'lightgray');
+});
+$('input').blur(function () {
+    $(this).css('background', 'white');
+});
+$('input').change(function () {
+    // console.log($(this).val())
+});
 
+const $loginForm = $('#login-form');
+$loginForm.submit(function(e){
+    e.preventDefault();
 
+    const formData = new FormData(e.target);
+    const { username, password } = Object.fromEntries(formData);
+    console.log(username, password);
+});
 
-//keyboard event
-// $('body').on('keydown', (e) => {
-//     if (e.which == 72) { //h in ascii
-//         $secondP.hide()
-//     }
-//     if (e.which == 83) { //s in ascii
-//         $secondP.show()
-//     }
-// })
+const listTemplate = (data) => {
+    return `
+        <ul>
+            ${data.map(x => `<li>${x.title}</li>`).join('')}
+        </ul>
+    `
+}
+
+//load file in html element
+$('#load_file').load('data.txt');
+
+// async
+const $listContainer = $('#get_data')
+
+$.get('http://localhost:6161/api/laptops', (data, status) => {
+    if(status == 'success'){
+        $listContainer.html(listTemplate(data));
+    }
+});

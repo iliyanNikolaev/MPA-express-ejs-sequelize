@@ -27,7 +27,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.laptops = require('./laptopModel.js')(sequelize, DataTypes);
-db.phones = require('./phoneModel.js')(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false })
     .then(() => console.log('re-sync done!'));
