@@ -2,7 +2,7 @@
   "name": "express-sequelize-mysql-api",
   "version": "1.0.0",
   "description": "node-express api with sequelize",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
