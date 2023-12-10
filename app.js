@@ -4,15 +4,14 @@ const corsOptions = {
     origin: 'http://localhost:6161'
 }
 
+const laptopRouter = require('./router/laptopRouter');
+
 const app = express();
 
 // middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get('/', (req, res) => {
-    res.json({ message: 'hello from express'});
-});
+app.use('/api/laptops', laptopRouter);
 
 app.listen(6161, () => console.log('server is listening on port 6161'));

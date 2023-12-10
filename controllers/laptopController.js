@@ -23,7 +23,8 @@ const getAllLaptops = async (req, res) => {
     const laptops = await Laptop.findAll({
         attributes: [
             'title',
-            'price'
+            'price',
+            "id"
         ]
     });
     res.status(200).send(laptops);
@@ -39,7 +40,7 @@ const getLaptop = async (req, res) => {
 // 4. edit laptop
 const editLaptop = async (req, res) => {
     const reqId = req.params.id;
-    const edited = await Product.update(req.body, { where: { id: reqId } });
+    const edited = await Laptop.update(req.body, { where: { id: reqId } });
     res.status(200).send(edited);
 }
 
@@ -50,10 +51,17 @@ const deleteLaptop = async (req, res) => {
     res.status(200).send('laptop is deleted')
 }
 
+// 6. get available laptops
+const getAvailableLaptops = async (req, res) => {
+    const laptops = await Laptop.findAll({ where: { available: true }});
+    res.status(200).send(laptops);
+}
+
 module.exports = {
     getAllLaptops,
     getLaptop,
     createLaptop,
     editLaptop,
-    deleteLaptop
+    deleteLaptop,
+    getAvailableLaptops
 }
