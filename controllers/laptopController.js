@@ -6,6 +6,10 @@ const Laptop = db.laptops
 // main work
 
 // 1. create laptop
+const getCreatePage = async (req, res) => {
+    res.render('create', {});
+}
+
 const createLaptop = async (req, res) => {
     const data = {
         title: req.body.title,
@@ -27,7 +31,8 @@ const getAllLaptops = async (req, res) => {
             "id"
         ]
     });
-    res.status(200).send(laptops);
+    
+    res.render('index', { laptops: laptops });
 }
 
 // 3. get single laptop
@@ -60,6 +65,7 @@ const getAvailableLaptops = async (req, res) => {
 module.exports = {
     getAllLaptops,
     getLaptop,
+    getCreatePage,
     createLaptop,
     editLaptop,
     deleteLaptop,
