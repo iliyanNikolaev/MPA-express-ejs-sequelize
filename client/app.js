@@ -27,7 +27,7 @@ $btnHide.on('click', () => {
 
 $btnShow.on('click', () => {
     // $secondP.show(500);
-    $secondP.fadeIn(500)
+    $secondP.fadeIn(500);
 });
 
 $btnSlideToggle.on('click', () => {
@@ -77,22 +77,34 @@ $loginForm.submit(function(e){
     console.log(username, password);
 });
 
-const listTemplate = (data) => {
-    return `
+
+//load file in html element
+$('#btn_load').on('click', () => {
+    $('#load_file').load('data.txt');
+})
+
+// async
+const $fetchBtn = $('#btn_fetch');
+const $listContainer = $('#get_data');
+
+const listTemplate = (data) => `
         <ul>
             ${data.map(x => `<li>${x.title}</li>`).join('')}
         </ul>
-    `
+    `;
+
+$fetchBtn.on('click', fetchAndRenderData);
+
+function fetchAndRenderData() {
+    $.ajax({
+        url: 'http://localhost:6161/laptops',
+        method: 'GET',
+        success: function(data){
+            $listContainer.html(listTemplate(data));
+        },
+        error: function(err){
+            alert(err.message)
+        }
+    })
 }
 
-//load file in html element
-$('#load_file').load('data.txt');
-
-// async
-const $listContainer = $('#get_data')
-
-$.get('http://localhost:6161/api/laptops', (data, status) => {
-    if(status == 'success'){
-        $listContainer.html(listTemplate(data));
-    }
-});
