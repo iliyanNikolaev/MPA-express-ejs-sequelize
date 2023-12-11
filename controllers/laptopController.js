@@ -5,8 +5,8 @@ const Laptop = db.laptops
 
 // main work
 
-// 1. create laptop
-const getCreatePage = async (req, res) => {
+// 1. create 
+const renderCreatePage = async (req, res) => {
     res.render('create', {});
 }
 
@@ -19,11 +19,11 @@ const createLaptop = async (req, res) => {
     }
 
     const laptop = await Laptop.create(data);
-    res.status(200).send(laptop);
+    return laptop;
 }
 
-// 2. get all laptops
-const getAllLaptops = async (req, res) => {
+// 2. home
+const renderHomePage = async (req, res) => {
     const laptops = await Laptop.findAll({
         attributes: [
             'title',
@@ -35,39 +35,42 @@ const getAllLaptops = async (req, res) => {
     res.render('index', { laptops: laptops });
 }
 
-// 3. get single laptop
-const getLaptop = async (req, res) => {
+// 3. details
+const renderDetailsPage = async (req, res) => {
     const reqId = req.params.id;
     const laptop = await Laptop.findOne({ where: { id: reqId } });
-    res.status(200).send(laptop);
+    res.render('details', { laptop: laptop });
 }
 
 // 4. edit laptop
 const editLaptop = async (req, res) => {
     const reqId = req.params.id;
-    const edited = await Laptop.update(req.body, { where: { id: reqId } });
-    res.status(200).send(edited);
+    await Laptop.update(req.body, { where: { id: reqId } });
+    return {ok: true };
+}
+
+const renderEditPage = async (req, res) => {
+    const reqId = req.params.id;
+    const laptop = await Laptop.findOne({ where: { id: reqId } });
+    res.render('edit', {laptop: laptop});
 }
 
 // 5. delete laptop
 const deleteLaptop = async (req, res) => {
     const reqId = req.params.id;
     await Laptop.destroy({ where: { id: reqId } });
-    res.status(200).send('laptop is deleted')
+    return { ok: true }
 }
 
 // 6. get available laptops
 const getAvailableLaptops = async (req, res) => {
     const laptops = await Laptop.findAll({ where: { available: true }});
-    res.status(200).send(laptops);
+    return laptops;
 }
 
 module.exports = {
-    getAllLaptops,
-    getLaptop,
-    getCreatePage,
-    createLaptop,
-    editLaptop,
-    deleteLaptop,
-    getAvailableLaptops
+    renderHomePage,
+    renderDetailsPage,
+    renderCreatePage,
+    renderEditPage,
 }

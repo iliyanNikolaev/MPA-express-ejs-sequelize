@@ -2,14 +2,9 @@ const laptopController = require('../controllers/laptopController');
 
 const laptopRouter = require('express').Router();
 
-laptopRouter.get('/', laptopController.getAllLaptops);
-laptopRouter.get('/details/:id', laptopController.getLaptop); 
-laptopRouter.get('/available', laptopController.getAvailableLaptops);
-
-laptopRouter.get('/create', laptopController.getCreatePage);
-laptopRouter.post('/create', laptopController.createLaptop);
-
-laptopRouter.put('/edit/:id', laptopController.editLaptop);
-laptopRouter.delete('/delete/:id', laptopController.deleteLaptop);
+laptopRouter.get('/', laptopController.renderHomePage);
+laptopRouter.get('/details/:id', laptopController.renderDetailsPage); 
+laptopRouter.get('/create', laptopController.renderCreatePage);
+laptopRouter.get('/edit/:id', laptopController.renderEditPage);
 
 module.exports = laptopRouter;
