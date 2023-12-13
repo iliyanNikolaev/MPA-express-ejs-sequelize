@@ -1,3 +1,10 @@
 # Express.js Multi-Page App with Sequelize and MySQL
 
-This is a simple multi-page web application built using Express.js, EJS for templating, Sequelize as the ORM for MySQL database, and follows the MVC (Model-View-Controller) architecture.
+This application follows an MVC-like architecture.
+
+**USED Technologies** :
+
+* Express.js 
+* EJS for template engine and jQuery in templates for better user experience 
+* Sequelize as the ORМ 
+* MySQL database
