@@ -5,3 +5,13 @@
         <li><%= laptop.title %></li>
         <% }) %>
 </ul>
+
+<button id="btn_test">click</button>
+
+<p id="result_test"></p>
+
+<script>
+    $('#btn_test').on('click', function(){
+        $('#result_test').text('Event handled from jQuery in browser');
+    })
+</script>

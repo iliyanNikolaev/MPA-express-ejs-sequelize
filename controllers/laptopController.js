@@ -19,7 +19,8 @@ const createLaptop = async (req, res) => {
     }
 
     const laptop = await Laptop.create(data);
-    return laptop;
+    // return laptop;
+    res.send({ laptop })
 }
 
 // 2. home
@@ -73,4 +74,5 @@ module.exports = {
     renderDetailsPage,
     renderCreatePage,
     renderEditPage,
+    createLaptop
 }
