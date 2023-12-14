@@ -4,29 +4,89 @@
     <div class="container d-flex align-items-center justify-content-center gap-5 mt-4">
         <div class="container border text-center">
             <h2>available</h2>
-            <% if(available?.length==0) {%>
-                <p>no available laptops</p>
-                <% } %>
+            <div id="available_container">
 
-                    <% available?.map(function(laptop) {%>
-                        <p>
-                            <%= laptop.title %>
-                            <button class="toggle_available" data-id="<%= laptop.id %>">&gt;</button>
-                        </p>
-                        <% }) %>
+            </div>
         </div>
         <div class="container border text-center">
             <h2>unavailable</h2>
-            <% if(available?.length==0) {%>
-                <p>no unavailable laptops</p>
-                <% } %>
+            <div id="unavailable_container">
 
-                    <% unavailable?.map(function(laptop) {%>
-                        <p>
-                            <button class="toggle_unavailable" data-id="<%= laptop.id %>" >&lt;</button>
-                            <%= laptop.title %>
-                        </p>
-                        <% }) %>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    init();
+
+    async function init() {
+        try {
+            const { availableInitState, unavailableInitState } = await getInitState();
+            const [ getAvState, setAvState, subscribeAv] = useState(availableInitState);
+            const [ getUnavState, setUnavState, subscribeUn] = useState(availableInitState);
+            renderAvailable(getAvState());
+            renderUnavailable(getUnavState());
+        } catch (err) {
+            console.log(err);
+            // window.location.replace("http://localhost:6161/error")
+        }
+    }
+
+    // render available
+    function renderAvailable(available) {
+        const container = document.querySelector('#available_container');
+        const ul = document.createElement('ul');
+        available.forEach(el => {
+            ul.appendChild(createLiElement(el));
+        });
+        container.appendChild(ul);
+    }
+    // render unavailable
+    function renderUnavailable(unavailable) {
+        const container = document.querySelector('#unavailable_container');
+        const ul = document.createElement('ul');
+        unavailable.forEach(el => {
+            ul.appendChild(createLiElement(el));
+        })
+        container.appendChild(ul);
+    }
+    // createLiElement
+    function createLiElement(li) {
+        const el = document.createElement('li');
+        el.id = li.id;
+        el.textContent = li.title;
+        return el;
+    }
+    // get init state
+    async function getInitState() {
+        const res = await fetch('http://localhost:6161/api/stocksdata');
+        const data = await res.json();
+        const availableInitState = data.available;
+        const unavailableInitState = data.unavailable;
+        return { availableInitState, unavailableInitState }
+    }
+    // use state
+    function useState(initValue) {
+        let state = initValue;
+        const subscribers = [];
+
+        function getState() {
+            return state;
+        }
+
+        function setState(newState) {
+            state = newState;
+            subscribers.forEach(subscriber => subscriber());
+        }
+
+        function subscribe(callback) {
+            subscribers.push(callback);
+            return function unsubscribe() {
+                subscribers.filter(s => s != callback);
+            }
+        }
+
+        return [getState, setState, subscribe]
+    }
+</script>

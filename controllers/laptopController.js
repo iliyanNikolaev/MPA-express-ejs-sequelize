@@ -122,10 +122,15 @@ const deleteLaptop = async (req, res) => {
 
 // 6. stocks
 const renderStocksPage = async (req, res) => {
+
+    res.render('stocks')
+}
+
+const getStocksData = async (req, res) => {
     const available = await getAvailableLaptops();
     const unavailable = await getUnavailableLaptops();
 
-    res.render('stocks', { available: available, unavailable: unavailable })
+    res.status(200).json({ available, unavailable });
 }
 
 const getAvailableLaptops = async (req, res) => {
@@ -150,5 +155,6 @@ module.exports = {
     editLaptop,
     deleteLaptop,
     getAvailableLaptops,
-    getUnavailableLaptops
+    getUnavailableLaptops,
+    getStocksData
 }

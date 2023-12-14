@@ -17,6 +17,8 @@ laptopRouter.post('/delete/:id', laptopController.deleteLaptop);
 
 laptopRouter.get('/stocks', laptopController.renderStocksPage);
 
+laptopRouter.get('/api/stocksdata', laptopController.getStocksData);
+
 laptopRouter.all('*', laptopController.renderNotFound);
 
 module.exports = laptopRouter;
