@@ -104,10 +104,20 @@ const renderEditPage = async (req, res) => {
 }
 
 // 5. delete laptop
+const renderDeletePage = async function (req, res) {
+    const reqId = req.params.id;
+    const laptop = await Laptop.findOne({ where: { id: reqId } });
+    res.render('delete', { laptop: laptop });
+}
+
 const deleteLaptop = async (req, res) => {
     const reqId = req.params.id;
-    await Laptop.destroy({ where: { id: reqId } });
-    return { ok: true }
+    const deleted = await Laptop.destroy({ where: { id: reqId } });
+    if(deleted) {
+        renderHomePage(req, res);
+    } else {
+        renderNotFound();
+    }
 }
 
 // 6. get available laptops
@@ -122,6 +132,8 @@ module.exports = {
     renderDetailsPage,
     renderCreatePage,
     renderEditPage,
+    renderDeletePage,
     createLaptop,
-    editLaptop
+    editLaptop,
+    deleteLaptop
 }

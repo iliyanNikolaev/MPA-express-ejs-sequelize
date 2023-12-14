@@ -1,5 +1,5 @@
-<h1>Details Page</h1>
 <% if(laptop) { %>
+    <h1>Details for <%= laptop.title %></h1>
     <p>
         <%= laptop.title %>
     </p>
@@ -17,6 +17,7 @@
             <% } %>
     </p>
     <a href="/edit/<%= laptop.id %>">edit</a>
+    <a href="/delete/<%= laptop.id %>">delete</a>
     <% } else { %>
         <p>This laptop not exist</p>
         <% } %>
