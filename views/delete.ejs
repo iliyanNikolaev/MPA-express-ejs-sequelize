@@ -1,11 +1,13 @@
-<% if(laptop) { %>
-    <h1>Are you sure you want to delete <%= laptop.title %>?</h1>
+<div class="container d-flex flex-column align-items-center">
+    <% if(laptop) { %>
+        <h1 class="mt-4">Are you sure you want to delete <%= laptop.title %>?</h1>
 
-    <a href="/details/<%= laptop.id %>">No, back to details</a>
+        <a href="/details/<%= laptop.id %>">No, back to details</a>
 
-    <form method="POST">
-        <input type="submit" value="delete">
-    </form>
-    <% } else { %>
-        This laptop not exist
-        <% } %>
+        <form method="POST">
+            <input type="submit" value="delete">
+        </form>
+        <% } else { %>
+            <p class="mt-4">This laptop not exist</p>
+            <% } %>
+</div>

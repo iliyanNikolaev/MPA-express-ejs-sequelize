@@ -1,138 +1,135 @@
-<h1>Create new laptop</h1>
+<div class="container d-flex flex-column align-items-center">
+    <h1 class="mt-4">Create new laptop</h1>
 
-<form method="POST">
+    <form method="POST" class="d-flex align-items-center flex-column">
 
-    <input type="text" id="create_title_input" name="title" placeholder="title">
-    <span id="create_invalid_title"></span>
-    <br>
+        <input type="text" id="create_title_input" name="title" placeholder="title">
+        <span id="create_invalid_title"></span>
 
-    <input type="text" id="create_price_input" name="price" placeholder="price">
-    <span id="create_invalid_price"></span>
-    <br>
+        <input type="text" id="create_price_input" name="price" placeholder="price">
+        <span id="create_invalid_price"></span>
 
-    <input type="text" id="create_description_input" name="description" placeholder="cpu, gpu, ram">
-    <span id="create_invalid_description"></span>
-    <br>
+        <input type="text" id="create_description_input" name="description" placeholder="cpu, gpu, ram">
+        <span id="create_invalid_description"></span>
 
-    <label for="_true"> In Stock
-        <input type="radio" class="available_radio" id="_true" name="available" value="true">
-    </label>
-    <br>
+        <label for="_true"> In Stock
+            <input type="radio" class="available_radio" id="_true" name="available" value="true">
+        </label>
 
-    <label for="_false"> Out of Stock
-        <input type="radio" class="available_radio" id="_false" name="available" value="false">
-    </label>
-    <br>
+        <label for="_false"> Out of Stock
+            <input type="radio" class="available_radio" id="_false" name="available" value="false">
+        </label>
 
-    <span id="create_available_warning">
-        <i class="fas fa-exclamation-triangle"></i>
-        if you don't mark whether the laptop is available or not, it won't be available until you change it
-        <i class="fas fa-exclamation-triangle"></i>
-    </span>
-    <br>
+        <div class="fw-bold mt-2">
+            <span id="create_available_warning">
+                    OUT OF STOCK BY DEFAULT
+            </span>
+        </div>
 
-    <input type="submit" value="create">
+        <input type="submit" value="create" class="mt-4">
+    </form>
     <style>
         input {
             border-color: black;
             margin-bottom: 3px;
         }
     </style>
-</form>
 
-<script>
-    $('input.available_radio').change(function() {
-        $('#create_available_warning').hide();
-    })
-
-    $('input').on('focusout', function () {
-        const value = $(this).val();
-        const name = $(this).attr('name');
-
-        if (name == 'title') {
-            const isInvalid = !value
-                || value.length < 3
-                || value.length > 30
-
-            isInvalid ? showTitleError() : titleIsValid()
-        }
-
-        if (name == 'price') {
-            const isInvalid = !value || isNaN(Number(value))
-
-            isInvalid ? showPriceError() : priceIsValid()
-        }
-
-        if (name == 'description') {
-            const isInvalid = !value
-                || value.length < 3
-                || value.length > 50
-
-            isInvalid ? showDescriptionError() : descriptionIsValid()
-        }
-    });
-
-    function showError(inputQuerySelector, spanQuerySelector, message) {
-        $(inputQuerySelector).css({
-            'border-color': 'red',
-            'border-width': '3px'
+    <script>
+        $('input.available_radio').change(function () {
+            console.log('trigger');
+            $('#create_available_warning').hide();
         });
-        $(spanQuerySelector).text(message);
 
-        setTimeout(function () {
+        $('input').on('focusout', function () {
+            const value = $(this).val();
+            const name = $(this).attr('name');
+
+            if (name == 'title') {
+                const isInvalid = !value
+                    || value.length < 3
+                    || value.length > 30
+
+                isInvalid ? showTitleError() : titleIsValid()
+            }
+
+            if (name == 'price') {
+                const isInvalid = !value || isNaN(Number(value))
+
+                isInvalid ? showPriceError() : priceIsValid()
+            }
+
+            if (name == 'description') {
+                const isInvalid = !value
+                    || value.length < 3
+                    || value.length > 50
+
+                isInvalid ? showDescriptionError() : descriptionIsValid()
+            }
+        });
+
+        function showError(inputQuerySelector, spanQuerySelector, message) {
             $(inputQuerySelector).css({
-                'border-color': 'black',
-                'border-width': '2px'
+                'border-color': 'red',
+                'border-width': '3px'
             });
+            $(spanQuerySelector).text(message);
 
-            $(spanQuerySelector).text('');
-        }, 3000);
+            setTimeout(function () {
+                $(inputQuerySelector).css({
+                    'border-color': 'black',
+                    'border-width': '2px'
+                });
 
-    }
+                $(spanQuerySelector).text('');
+            }, 7000);
 
-    function validInput(inputQuerySelector) {
-        $(inputQuerySelector).css({
-            'border-color': 'lightgreen',
-            'border-width': '3px'
-        });
-    }
+        }
 
-    function showTitleError() {
-        const inputQuerySelector = '#create_title_input';
-        const spanQuerySelector = '#create_invalid_title';
-        const message = 'Title must be between 3 and 30 characters.';
+        function validInput(inputQuerySelector) {
+            $(inputQuerySelector).css({
+                'border-color': 'lightgreen',
+                'border-width': '3px'
+            });
+        }
 
-        showError(inputQuerySelector, spanQuerySelector, message);
-    }
+        function showTitleError() {
+            const inputQuerySelector = '#create_title_input';
+            const spanQuerySelector = '#create_invalid_title';
+            const message = 'Title must be between 3 and 30 characters.';
 
-    function showPriceError() {
-        const inputQuerySelector = '#create_price_input';
-        const spanQuerySelector = '#create_invalid_price';
-        const message = 'Price must be a integer!';
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
 
-        showError(inputQuerySelector, spanQuerySelector, message);
-    }
+        function showPriceError() {
+            const inputQuerySelector = '#create_price_input';
+            const spanQuerySelector = '#create_invalid_price';
+            const message = 'Price must be a integer!';
 
-    function showDescriptionError() {
-        const inputQuerySelector = '#create_description_input';
-        const spanQuerySelector = '#create_invalid_description';
-        const message = 'Description must be between 3 and 50 characters.';
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
 
-        showError(inputQuerySelector, spanQuerySelector, message);
-    }
+        function showDescriptionError() {
+            const inputQuerySelector = '#create_description_input';
+            const spanQuerySelector = '#create_invalid_description';
+            const message = 'Description must be between 3 and 50 characters.';
 
-    function titleIsValid() {
-        const inputQuerySelector = '#create_title_input';
-        validInput(inputQuerySelector);
-    }
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
 
-    function priceIsValid() {
-        const inputQuerySelector = '#create_price_input';
-        validInput(inputQuerySelector);
-    }
+        function titleIsValid() {
+            const inputQuerySelector = '#create_title_input';
+            validInput(inputQuerySelector);
+        }
 
-    function descriptionIsValid() {
-        const inputQuerySelector = '#create_description_input';
-        validInput(inputQuerySelector);
-    }
-</script>
+        function priceIsValid() {
+            const inputQuerySelector = '#create_price_input';
+            validInput(inputQuerySelector);
+        }
+
+        function descriptionIsValid() {
+            const inputQuerySelector = '#create_description_input';
+            validInput(inputQuerySelector);
+        }
+    </script>
+</div>

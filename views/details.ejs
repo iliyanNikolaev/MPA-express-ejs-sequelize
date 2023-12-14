@@ -1,23 +1,26 @@
-<% if(laptop) { %>
-    <h1>Details for <%= laptop.title %></h1>
-    <p>
-        <%= laptop.title %>
-    </p>
-    <p>
-        <%= laptop.description %>
-    </p>
-    <p>
-        <%= laptop.price %> BGN
-    </p>
-    <p>
-        <% if(laptop.available){ %>
+<div class="container d-flex flex-column align-items-center">
+    <% if(laptop) { %>
+        <h1 class="mt-4">Details for <%= laptop.title %>
+        </h1>
+        <p>
+            <%= laptop.title %>
+        </p>
+        <p>
+            <%= laptop.description %>
+        </p>
+        <p>
+            <%= laptop.price %> BGN
+        </p>
+        <p>
+            <% if(laptop.available){ %>
                 In Stock
-            <% } else { %>
-                Out of Stock
+                <% } else { %>
+                    Out of Stock
+                    <% } %>
+        </p>
+        <a href="/edit/<%= laptop.id %>">edit</a>
+        <a href="/delete/<%= laptop.id %>">delete</a>
+        <% } else { %>
+            <p class="mt-4">This laptop not exist</p>
             <% } %>
-    </p>
-    <a href="/edit/<%= laptop.id %>">edit</a>
-    <a href="/delete/<%= laptop.id %>">delete</a>
-    <% } else { %>
-        <p>This laptop not exist</p>
-        <% } %>
+</div>
