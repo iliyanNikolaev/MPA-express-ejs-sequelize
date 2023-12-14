@@ -23,10 +23,11 @@
     async function init() {
         try {
             const { availableInitState, unavailableInitState } = await getInitState();
-            const [ getAvState, setAvState, subscribeAv] = useState(availableInitState);
-            const [ getUnavState, setUnavState, subscribeUn] = useState(availableInitState);
-            renderAvailable(getAvState());
-            renderUnavailable(getUnavState());
+            const avState = new State(availableInitState);
+            const unavState = new State(unavailableInitState);
+
+            renderAvailable(avState.getState());
+            renderUnavailable(unavState.getState());
         } catch (err) {
             console.log(err);
             // window.location.replace("http://localhost:6161/error")
@@ -66,27 +67,26 @@
         const unavailableInitState = data.unavailable;
         return { availableInitState, unavailableInitState }
     }
-    // use state
-    function useState(initValue) {
-        let state = initValue;
-        const subscribers = [];
+    // State class
+    class State {
+        state = null;
+        subscribers = [];
 
-        function getState() {
-            return state;
+        constructor(initState) {
+            this.state = initState;
         }
 
-        function setState(newState) {
-            state = newState;
+        getState() {
+            return this.state;
+        }
+
+        setState(newState) {
+            this.state = newState;
             subscribers.forEach(subscriber => subscriber());
         }
 
-        function subscribe(callback) {
+        subscribe(callback) {
             subscribers.push(callback);
-            return function unsubscribe() {
-                subscribers.filter(s => s != callback);
-            }
         }
-
-        return [getState, setState, subscribe]
     }
 </script>
