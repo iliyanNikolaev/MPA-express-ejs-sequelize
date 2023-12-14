@@ -120,9 +120,21 @@ const deleteLaptop = async (req, res) => {
     }
 }
 
-// 6. get available laptops
+// 6. stocks
+const renderStocksPage = async (req, res) => {
+    const available = await getAvailableLaptops();
+    const unavailable = await getUnavailableLaptops();
+
+    res.render('stocks', { available: available, unavailable: unavailable })
+}
+
 const getAvailableLaptops = async (req, res) => {
     const laptops = await Laptop.findAll({ where: { available: true } });
+    return laptops;
+}
+
+const getUnavailableLaptops = async (req, res) => {
+    const laptops = await Laptop.findAll({ where: { available: false } });
     return laptops;
 }
 
@@ -133,7 +145,10 @@ module.exports = {
     renderCreatePage,
     renderEditPage,
     renderDeletePage,
+    renderStocksPage,
     createLaptop,
     editLaptop,
-    deleteLaptop
+    deleteLaptop,
+    getAvailableLaptops,
+    getUnavailableLaptops
 }

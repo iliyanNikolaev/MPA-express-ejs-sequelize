@@ -15,6 +15,8 @@ laptopRouter.post('/edit/:id', laptopController.editLaptop);
 laptopRouter.get('/delete/:id', laptopController.renderDeletePage);
 laptopRouter.post('/delete/:id', laptopController.deleteLaptop);
 
+laptopRouter.get('/stocks', laptopController.renderStocksPage);
+
 laptopRouter.all('*', laptopController.renderNotFound);
 
 module.exports = laptopRouter;

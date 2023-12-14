@@ -1,0 +1,32 @@
+<div class="container d-flex flex-column align-items-center">
+    <h1 class="mt-4">Stocks</h1>
+
+    <div class="container d-flex align-items-center justify-content-center gap-5 mt-4">
+        <div class="container border text-center">
+            <h2>available</h2>
+            <% if(available?.length==0) {%>
+                <p>no available laptops</p>
+                <% } %>
+
+                    <% available?.map(function(laptop) {%>
+                        <p>
+                            <%= laptop.title %>
+                            <button class="toggle_available" data-id="<%= laptop.id %>">&gt;</button>
+                        </p>
+                        <% }) %>
+        </div>
+        <div class="container border text-center">
+            <h2>unavailable</h2>
+            <% if(available?.length==0) {%>
+                <p>no unavailable laptops</p>
+                <% } %>
+
+                    <% unavailable?.map(function(laptop) {%>
+                        <p>
+                            <button class="toggle_unavailable" data-id="<%= laptop.id %>" >&lt;</button>
+                            <%= laptop.title %>
+                        </p>
+                        <% }) %>
+        </div>
+    </div>
+</div>
