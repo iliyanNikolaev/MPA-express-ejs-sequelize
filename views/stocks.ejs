@@ -4,13 +4,13 @@
     <div class="container d-flex align-items-center justify-content-center gap-5 mt-4">
         <div class="container border text-center">
             <h2>available</h2>
-            <div id="available_container">
+            <div id="available_container" class="d-flex flex-column align-items-center gap-5">
 
             </div>
         </div>
         <div class="container border text-center">
             <h2>unavailable</h2>
-            <div id="unavailable_container">
+            <div id="unavailable_container" class="d-flex flex-column align-items-center">
 
             </div>
         </div>
@@ -26,14 +26,56 @@
             const avState = new State(availableInitState);
             const unavState = new State(unavailableInitState);
 
-            renderAvailable(avState.getState());
-            renderUnavailable(unavState.getState());
+            renderLists(avState.getState(), unavState.getState());
+
+            document.querySelectorAll('.toggle_btn').forEach(x => x.addEventListener('click', toggle));
+
+            function toggle(e) {
+                console.log('trigger');
+                // const itemId = e.target.id;
+                // avState.getState().forEach(x => {
+                //     if (x.id == itemId) {
+                //         const prevAvState = avState.getState();
+                //         const newAvState = prevAvState.filter(x => x.id != itemId);
+
+                //         const prevUnavState = unavState.getState();
+                //         const newUnavState = [...prevUnavState, {...x}];
+
+                //         renderLists(newAvState, newUnavState);
+                //     }
+                // })
+                // unavState.getState().forEach(x => {
+                //     if (x.id == itemId) {
+                //         const prevUnavState = unavState.getState();
+                //         const newUnavState = prevUnavState.filter(x => x.id != itemId);
+
+                //         const prevAvState = avState.getState();
+                //         const newAvState = [...prevAvState, {...x}];
+
+                //         renderLists(newAvState, newUnavState);
+                //     }
+                // })
+            }
+
         } catch (err) {
             console.log(err);
             // window.location.replace("http://localhost:6161/error")
         }
     }
 
+    // add listeners to btns
+    function addToggleListeners(callback) {
+        
+    }
+    // handle toggle
+    function toggleHandler(e) {
+        console.log(e.currentTarget);
+    }
+    // render lists
+    function renderLists(available, unavailable) {
+        renderAvailable(available);
+        renderUnavailable(unavailable);
+    }
     // render available
     function renderAvailable(available) {
         const container = document.querySelector('#available_container');
@@ -41,22 +83,28 @@
         available.forEach(el => {
             ul.appendChild(createLiElement(el));
         });
-        container.appendChild(ul);
+        container.replaceChildren(ul);
     }
     // render unavailable
     function renderUnavailable(unavailable) {
         const container = document.querySelector('#unavailable_container');
-        const ul = document.createElement('ul');
+        const div = document.createElement('div');
         unavailable.forEach(el => {
-            ul.appendChild(createLiElement(el));
+            div.appendChild(createLiElement(el));
         })
-        container.appendChild(ul);
+        container.replaceChildren(div);
     }
     // createLiElement
-    function createLiElement(li) {
-        const el = document.createElement('li');
-        el.id = li.id;
-        el.textContent = li.title;
+    function createLiElement(laptop) {
+        const el = document.createElement('div');
+        const elClasses = ['d-flex', 'gap-2', 'mt-1'];
+        elClasses.forEach(x => el.classList.add(x));
+        const btn = document.createElement('button');
+        btn.classList.add('toggle_btn')
+        btn.textContent = 'toggle';
+        btn.id = laptop.id;
+        el.textContent = laptop.title;
+        el.appendChild(btn);
         return el;
     }
     // get init state
@@ -70,7 +118,6 @@
     // State class
     class State {
         state = null;
-        subscribers = [];
 
         constructor(initState) {
             this.state = initState;
@@ -82,11 +129,6 @@
 
         setState(newState) {
             this.state = newState;
-            subscribers.forEach(subscriber => subscriber());
-        }
-
-        subscribe(callback) {
-            subscribers.push(callback);
         }
     }
 </script>
