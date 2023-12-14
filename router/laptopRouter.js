@@ -10,5 +10,8 @@ laptopRouter.get('/create', laptopController.renderCreatePage);
 laptopRouter.post('/create', laptopController.createLaptop);
 
 laptopRouter.get('/edit/:id', laptopController.renderEditPage);
+laptopRouter.post('/edit/:id', laptopController.editLaptop);
+
+laptopRouter.all('*', laptopController.renderNotFound);
 
 module.exports = laptopRouter;

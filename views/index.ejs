@@ -2,16 +2,6 @@
 
 <ul>
     <% laptops.forEach(function(laptop) {%>
-        <li><%= laptop.title %></li>
+        <li><%= laptop.title %> <a href="/details/<%= laptop.id %>">details</a></li>
         <% }) %>
 </ul>
-
-<button id="btn_test">click</button>
-
-<p id="result_test"></p>
-
-<script>
-    $('#btn_test').on('click', function(){
-        $('#result_test').text('Event handled from jQuery in browser');
-    })
-</script>

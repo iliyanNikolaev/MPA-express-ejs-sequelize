@@ -5,6 +5,11 @@ const Laptop = db.laptops
 
 // main work
 
+// 0. Not Found
+const renderNotFound = async (req, res) => {
+    res.render('error');
+}
+
 // 1. create 
 const renderCreatePage = async (req, res) => {
     res.render('create', {});
@@ -63,8 +68,33 @@ const renderDetailsPage = async (req, res) => {
 // 4. edit laptop
 const editLaptop = async (req, res) => {
     const reqId = req.params.id;
-    await Laptop.update(req.body, { where: { id: reqId } });
-    return { ok: true };
+    const { title, price, description, available } = req.body;
+
+    // parse the data
+    const data = {
+        title,
+        price: Number(price),
+        description,
+        available: available == "true" ? true : false
+    }
+
+    // validate the data
+    const isInvalid =
+        !title
+        || title.length < 3
+        || title.length > 30
+        || isNaN(price)
+        || !description
+        || description.length < 3
+        || description.length > 50;
+
+    if (isInvalid) {
+        return res.render('error');
+    }
+    
+    await Laptop.update(data, { where: { id: reqId } });
+    console.log(req.body);
+    res.render('details', { laptop: {...data, id: reqId} });
 }
 
 const renderEditPage = async (req, res) => {
@@ -87,9 +117,11 @@ const getAvailableLaptops = async (req, res) => {
 }
 
 module.exports = {
+    renderNotFound,
     renderHomePage,
     renderDetailsPage,
     renderCreatePage,
     renderEditPage,
-    createLaptop
+    createLaptop,
+    editLaptop
 }

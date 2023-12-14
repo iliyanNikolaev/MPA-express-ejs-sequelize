@@ -15,16 +15,16 @@
     <br>
 
     <label for="_true"> In Stock
-        <input type="radio" id="_true" name="available" value="true">
+        <input type="radio" class="available_radio" id="_true" name="available" value="true">
     </label>
     <br>
 
     <label for="_false"> Out of Stock
-        <input type="radio" id="_false" name="available" value="false">
+        <input type="radio" class="available_radio" id="_false" name="available" value="false">
     </label>
     <br>
 
-    <span>
+    <span id="create_available_warning">
         <i class="fas fa-exclamation-triangle"></i>
         if you don't mark whether the laptop is available or not, it won't be available until you change it
         <i class="fas fa-exclamation-triangle"></i>
@@ -41,6 +41,10 @@
 </form>
 
 <script>
+    $('input.available_radio').change(function() {
+        $('#create_available_warning').hide();
+    })
+
     $('input').on('focusout', function () {
         const value = $(this).val();
         const name = $(this).attr('name');

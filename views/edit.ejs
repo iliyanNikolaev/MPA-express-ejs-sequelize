@@ -1,8 +1,135 @@
 <h1>Edit page</h1>
 <% if(laptop) { %>
-    <p>
-        <%= laptop.title %>
-    </p>
+    <h1>Edit <%= laptop.title %>
+    </h1>
+
+    <form method="POST">
+
+        <input type="text" id="edit_title_input" name="title" placeholder="title" value="<%= laptop.title  %>">
+        <span id="edit_invalid_title"></span>
+        <br>
+
+        <input type="text" id="edit_price_input" name="price" placeholder="price" value="<%= laptop.price  %>">
+        <span id="edit_invalid_price"></span>
+        <br>
+
+        <input type="text" id="edit_description_input" name="description" placeholder="cpu, gpu, ram" value="<%= laptop.description %>">
+        <span id="edit_invalid_description"></span>
+        <br>
+
+        <label for="_true"> In Stock
+            <input type="radio" class="available_radio" id="_true" name="available" value="true"
+            <% if(laptop.available == true) { %> checked <% } %>>
+        </label>
+        <br>
+
+        <label for="_false"> Out of Stock
+            <input type="radio" class="available_radio" id="_false" name="available" value="false" <% if(laptop.available == false) { %> checked <% } %>>
+        </label>
+        <br>
+
+        <input type="submit" value="edit">
+        <style>
+            input {
+                border-color: black;
+                margin-bottom: 3px;
+            }
+        </style>
+    </form>
+
+    <script>
+
+        $('input').on('focusout', function () {
+            const value = $(this).val();
+            const name = $(this).attr('name');
+
+            if (name == 'title') {
+                const isInvalid = !value
+                    || value.length < 3
+                    || value.length > 30
+
+                isInvalid ? showTitleError() : titleIsValid()
+            }
+
+            if (name == 'price') {
+                const isInvalid = !value || isNaN(Number(value))
+
+                isInvalid ? showPriceError() : priceIsValid()
+            }
+
+            if (name == 'description') {
+                const isInvalid = !value
+                    || value.length < 3
+                    || value.length > 50
+
+                isInvalid ? showDescriptionError() : descriptionIsValid()
+            }
+        });
+
+        function showError(inputQuerySelector, spanQuerySelector, message) {
+            $(inputQuerySelector).css({
+                'border-color': 'red',
+                'border-width': '3px'
+            });
+            $(spanQuerySelector).text(message);
+
+            setTimeout(function () {
+                $(inputQuerySelector).css({
+                    'border-color': 'black',
+                    'border-width': '2px'
+                });
+
+                $(spanQuerySelector).text('');
+            }, 3000);
+
+        }
+
+        function validInput(inputQuerySelector) {
+            $(inputQuerySelector).css({
+                'border-color': 'lightgreen',
+                'border-width': '3px'
+            });
+        }
+
+        function showTitleError() {
+            const inputQuerySelector = '#edit_title_input';
+            const spanQuerySelector = '#edit_invalid_title';
+            const message = 'Title must be between 3 and 30 characters.';
+
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
+
+        function showPriceError() {
+            const inputQuerySelector = '#edit_price_input';
+            const spanQuerySelector = '#edit_invalid_price';
+            const message = 'Price must be a integer!';
+
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
+
+        function showDescriptionError() {
+            const inputQuerySelector = '#edit_description_input';
+            const spanQuerySelector = '#edit_invalid_description';
+            const message = 'Description must be between 3 and 50 characters.';
+
+            showError(inputQuerySelector, spanQuerySelector, message);
+        }
+
+        function titleIsValid() {
+            const inputQuerySelector = '#edit_title_input';
+            validInput(inputQuerySelector);
+        }
+
+        function priceIsValid() {
+            const inputQuerySelector = '#edit_price_input';
+            validInput(inputQuerySelector);
+        }
+
+        function descriptionIsValid() {
+            const inputQuerySelector = '#edit_description_input';
+            validInput(inputQuerySelector);
+        }
+    </script>
     <% } else { %>
         <p>This laptop not exist</p>
         <% } %>
