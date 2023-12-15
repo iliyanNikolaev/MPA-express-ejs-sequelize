@@ -75,12 +75,6 @@
     function attachEventListeners(callback) {
         document.querySelectorAll('.toggle_btn').forEach(x => x.addEventListener('click', callback));
     }
-    // handle toggle
-    function toggleHandler(e, available, unavailable) {
-        console.log(e.currentTarget);
-        console.log(available);
-        console.log(unavailable);
-    }
     // render lists
     function renderLists(available, unavailable) {
         renderAvailable(available);
@@ -89,15 +83,27 @@
     // render available
     function renderAvailable(available) {
         const container = document.querySelector('#available_container');
-        const ul = document.createElement('ul');
+        if(!available || available.length == []) {
+            const p = document.createElement('p');
+            p.textContent = 'No available laptops';
+            container.replaceChildren(p);
+            return;
+        }
+        const div = document.createElement('div');
         available.forEach(el => {
-            ul.appendChild(createLiElement(el));
+            div.appendChild(createLiElement(el));
         });
-        container.replaceChildren(ul);
+        container.replaceChildren(div);
     }
     // render unavailable
     function renderUnavailable(unavailable) {
         const container = document.querySelector('#unavailable_container');
+        if(!unavailable || unavailable.length == 0) {
+            const p = document.createElement('p');
+            p.textContent = 'No unavailable laptops';
+            container.replaceChildren(p);
+            return;
+        }
         const div = document.createElement('div');
         unavailable.forEach(el => {
             div.appendChild(createLiElement(el));
