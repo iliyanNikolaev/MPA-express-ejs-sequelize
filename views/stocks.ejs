@@ -23,53 +23,63 @@
     async function init() {
         try {
             const { availableInitState, unavailableInitState } = await getInitState();
-            const avState = new State(availableInitState);
-            const unavState = new State(unavailableInitState);
+            let avState = availableInitState;
+            let unavState = unavailableInitState;
 
-            renderLists(avState.getState(), unavState.getState());
+            renderLists(avState, unavState);
 
-            document.querySelectorAll('.toggle_btn').forEach(x => x.addEventListener('click', toggle));
+            attachEventListeners(toggle);
 
             function toggle(e) {
-                console.log('trigger');
-                // const itemId = e.target.id;
-                // avState.getState().forEach(x => {
-                //     if (x.id == itemId) {
-                //         const prevAvState = avState.getState();
-                //         const newAvState = prevAvState.filter(x => x.id != itemId);
+                let currentItem = null;
+                let isAv = false;
+                for (let i = 0; i < avState.length; i++) {
+                    if (avState[i].id == e.target.id) {
+                        currentItem = avState[i];
+                        isAv = true;
+                        break;
+                    }
+                }
+                for (let i = 0; i < unavState.length; i++) {
+                    if (unavState[i].id == e.target.id) {
+                        currentItem = unavState[i];
+                        break;
+                    }
+                }
 
-                //         const prevUnavState = unavState.getState();
-                //         const newUnavState = [...prevUnavState, {...x}];
-
-                //         renderLists(newAvState, newUnavState);
-                //     }
-                // })
-                // unavState.getState().forEach(x => {
-                //     if (x.id == itemId) {
-                //         const prevUnavState = unavState.getState();
-                //         const newUnavState = prevUnavState.filter(x => x.id != itemId);
-
-                //         const prevAvState = avState.getState();
-                //         const newAvState = [...prevAvState, {...x}];
-
-                //         renderLists(newAvState, newUnavState);
-                //     }
-                // })
+                if (isAv) {
+                    dettachEventListeners(toggle);
+                    avState = avState.filter(x => x.id != e.target.id);
+                    unavState = [...unavState, { ...currentItem }];
+                    renderLists(avState, unavState);
+                    attachEventListeners(toggle);
+                } else {
+                    dettachEventListeners(toggle);
+                    unavState = unavState.filter(x => x.id != e.target.id);
+                    avState = [...avState, { ...currentItem }];
+                    renderLists(avState, unavState);
+                    attachEventListeners(toggle);
+                }
             }
 
         } catch (err) {
-            console.log(err);
-            // window.location.replace("http://localhost:6161/error")
+            window.location.replace("http://localhost:6161/error")
         }
     }
 
-    // add listeners to btns
-    function addToggleListeners(callback) {
-        
+    // dettach event listeners
+    function dettachEventListeners(callback){
+        document.querySelectorAll('.toggle_btn').forEach(x => x.removeEventListener('click', callback));
+    }
+    // attach event listeners
+    function attachEventListeners(callback) {
+        document.querySelectorAll('.toggle_btn').forEach(x => x.addEventListener('click', callback));
     }
     // handle toggle
-    function toggleHandler(e) {
+    function toggleHandler(e, available, unavailable) {
         console.log(e.currentTarget);
+        console.log(available);
+        console.log(unavailable);
     }
     // render lists
     function renderLists(available, unavailable) {
@@ -114,21 +124,5 @@
         const availableInitState = data.available;
         const unavailableInitState = data.unavailable;
         return { availableInitState, unavailableInitState }
-    }
-    // State class
-    class State {
-        state = null;
-
-        constructor(initState) {
-            this.state = initState;
-        }
-
-        getState() {
-            return this.state;
-        }
-
-        setState(newState) {
-            this.state = newState;
-        }
     }
 </script>
