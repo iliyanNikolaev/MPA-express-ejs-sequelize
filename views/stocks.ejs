@@ -18,9 +18,7 @@
 </div>
 
 <script>
-    init();
-
-    async function init() {
+    const init = async () => {
         try {
             const { availableInitState, unavailableInitState } = await getInitState();
             let avState = availableInitState;
@@ -51,7 +49,7 @@
                     e.target.textContent = 'Loading...'
                     disableBtns();
                     const res = await toggleLaptopById(e.target.id);
-                    await throttling(2500);
+                    await throttling(1000);
                     dettachEventListeners(toggle);
                     avState = avState.filter(x => x.id != e.target.id);
                     unavState = [...unavState, { ...currentItem }];
@@ -61,7 +59,7 @@
                     e.target.textContent = 'Loading...'
                     disableBtns();
                     const res = await toggleLaptopById(e.target.id);
-                    await throttling(2500);
+                    await throttling(1000);
                     dettachEventListeners(toggle);
                     unavState = unavState.filter(x => x.id != e.target.id);
                     avState = [...avState, { ...currentItem }];
@@ -74,6 +72,8 @@
             window.location.replace("http://localhost:6161/error")
         }
     }
+    
+    init();
 
     async function toggleLaptopById(id) {
         try {
