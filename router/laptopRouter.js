@@ -19,6 +19,8 @@ laptopRouter.get('/stocks', laptopController.renderStocksPage);
 
 laptopRouter.get('/api/stocksdata', laptopController.getStocksData);
 
+laptopRouter.post('/api/toggle/:id', laptopController.toggleLaptop);
+
 laptopRouter.all('*', laptopController.renderNotFound);
 
 module.exports = laptopRouter;

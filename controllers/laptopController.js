@@ -143,6 +143,17 @@ const getUnavailableLaptops = async (req, res) => {
     return laptops;
 }
 
+const toggleLaptop = async (req, res) => {
+    const reqId = req.params.id;
+    const laptop = await Laptop.findOne({ where: { id: reqId } });
+    if(laptop) {
+        await Laptop.update({ ...laptop, available: !laptop.available}, { where: { id: reqId } });
+        res.json({ ok: true });
+    } else {
+        res.json({ ok: false });
+    }
+}
+
 module.exports = {
     renderNotFound,
     renderHomePage,
@@ -156,5 +167,6 @@ module.exports = {
     deleteLaptop,
     getAvailableLaptops,
     getUnavailableLaptops,
-    getStocksData
+    getStocksData,
+    toggleLaptop
 }
