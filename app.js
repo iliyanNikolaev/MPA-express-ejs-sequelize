@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(expressLayouts);
+app.use(express.static('static'));
 app.set('view engine', 'ejs');
 app.use(laptopRouter);
 
