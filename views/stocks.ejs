@@ -16,5 +16,10 @@
         </div>
     </div>
 </div>
-
+<script>
+    let model = '<%= data %>';
+    model = JSON.parse(model.replace(/&#34;/g, `"`));
+    const availableInitState = model.available;
+    const unavailableInitState = model.unavailable;
+</script>
 <script src="js/stocks.js"></script>

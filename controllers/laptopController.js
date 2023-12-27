@@ -122,8 +122,14 @@ const deleteLaptop = async (req, res) => {
 
 // 6. stocks
 const renderStocksPage = async (req, res) => {
+    const laptops = await Laptop.findAll();
 
-    res.render('stocks')
+    res.render('stocks', {
+        data: JSON.stringify({
+            available: laptops.filter((obj) => { return obj.available == true; }),
+            unavailable: laptops.filter((obj) => { return obj.available == false; })
+        })
+    });
 }
 
 const getStocksData = async (req, res) => {

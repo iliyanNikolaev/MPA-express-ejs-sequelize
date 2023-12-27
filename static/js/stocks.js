@@ -1,6 +1,6 @@
-const init = async () => {
-    try {
-        const { availableInitState, unavailableInitState } = await getInitState();
+init();
+
+async function init() {
         let avState = availableInitState;
         let unavState = unavailableInitState;
 
@@ -47,13 +47,7 @@ const init = async () => {
                 attachEventListeners(toggle);
             }
         }
-
-    } catch (err) {
-        window.location.replace("http://localhost:6161/error")
-    }
 }
-
-init();
 
 async function toggleLaptopById(id) {
     try {
@@ -131,12 +125,4 @@ function createLiElement(laptop) {
     el.textContent = laptop.title;
     el.appendChild(btn);
     return el;
-}
-// get init state
-async function getInitState() {
-    const res = await fetch('http://localhost:6161/api/stocksdata');
-    const data = await res.json();
-    const availableInitState = data.available;
-    const unavailableInitState = data.unavailable;
-    return { availableInitState, unavailableInitState }
 }
