@@ -1,25 +1,26 @@
 <div class="container d-flex flex-column align-items-center">
     <h1 class="mt-4">Stocks</h1>
-
     <div class="container d-flex align-items-center justify-content-center gap-5 mt-4">
         <div class="container border text-center">
             <h2>available</h2>
             <div id="available_container" class="d-flex flex-column align-items-center gap-5">
-
+                <% available.forEach(laptop => { %>
+                    <div class="d-flex gap-2 mt-1"><%= laptop.title  %>
+                        <button id="<%= laptop.id  %>" class="toggle_btn">toggle</button>
+                    </div>
+                <% }) %>
             </div>
         </div>
         <div class="container border text-center">
             <h2>unavailable</h2>
-            <div id="unavailable_container" class="d-flex flex-column align-items-center">
-
+            <div id="unavailable_container" class="d-flex flex-column align-items-center gap-5">
+                <% unavailable.forEach(laptop => { %>
+                    <div class="d-flex gap-2 mt-1"><%= laptop.title  %>
+                        <button id="<%= laptop.id  %>" class="toggle_btn">toggle</button>
+                    </div>
+                <% }) %>
             </div>
         </div>
     </div>
 </div>
-<script>
-    let model = '<%= data %>';
-    model = JSON.parse(model.replace(/&#34;/g, `"`));
-    const availableInitState = model.available;
-    const unavailableInitState = model.unavailable;
-</script>
-<script src="js/stocks.js"></script>
+<script src="js/stocks.js" type="module"></script>

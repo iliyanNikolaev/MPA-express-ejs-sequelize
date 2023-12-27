@@ -123,30 +123,12 @@ const deleteLaptop = async (req, res) => {
 // 6. stocks
 const renderStocksPage = async (req, res) => {
     const laptops = await Laptop.findAll();
+    const data = {
+        available: laptops.filter(laptop => laptop.available == true),
+        unavailable: laptops.filter(laptop => laptop.available == false)
+    }
 
-    res.render('stocks', {
-        data: JSON.stringify({
-            available: laptops.filter((obj) => { return obj.available == true; }),
-            unavailable: laptops.filter((obj) => { return obj.available == false; })
-        })
-    });
-}
-
-const getStocksData = async (req, res) => {
-    const available = await getAvailableLaptops();
-    const unavailable = await getUnavailableLaptops();
-
-    res.status(200).json({ available, unavailable });
-}
-
-const getAvailableLaptops = async (req, res) => {
-    const laptops = await Laptop.findAll({ where: { available: true } });
-    return laptops;
-}
-
-const getUnavailableLaptops = async (req, res) => {
-    const laptops = await Laptop.findAll({ where: { available: false } });
-    return laptops;
+    res.render('stocks', data);
 }
 
 const toggleLaptop = async (req, res) => {
@@ -171,8 +153,5 @@ module.exports = {
     createLaptop,
     editLaptop,
     deleteLaptop,
-    getAvailableLaptops,
-    getUnavailableLaptops,
-    getStocksData,
     toggleLaptop
 }
